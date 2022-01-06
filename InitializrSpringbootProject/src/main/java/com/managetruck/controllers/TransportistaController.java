@@ -59,7 +59,7 @@ public class TransportistaController {
             model.put("poliza", poliza);
             model.put("fotos", fotos);
             
-            return "transportista_form";//modificar nombre de vista, no debe redirigir a index si no a la vista que utilizaremos
+            return "index";//modificar nombre de vista, no debe redirigir a index si no a la vista que utilizaremos
         }
         return "redirect:/registroTransportista";
     }
