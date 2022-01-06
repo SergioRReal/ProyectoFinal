@@ -53,7 +53,7 @@
                     <div class="form-floating">
                         <select name="zona" id="zona" class="form-select" required>
                             <option selected disable value="">Seleccione la provincia</option>
-                            <option th:each="$zona : ${zonas}" th:text=${zona.nombre} value="${zona.id}"></option>
+                            <option option th:each="provincia:${provincias}" th:value="${provincia.id}" th:text="${provincia.provincia}"></option>
                         </select>
                         <label for="zona" class="form-label">Provincia</label>
                     </div>

@@ -1,9 +1,11 @@
 package com.managetruck.controllers;
 
 import com.managetruck.entidades.Camion;
+import com.managetruck.entidades.Provincias;
 import com.managetruck.entidades.Transportista;
 import com.managetruck.entidades.Usuario;
 import com.managetruck.errores.ErroresServicio;
+import com.managetruck.repositorios.RepositorioProvincias;
 import com.managetruck.repositorios.RepositorioTransportista;
 import com.managetruck.servicios.CamionServicio;
 import com.managetruck.servicios.TransportistaServicio;
@@ -31,6 +33,9 @@ public class TransportistaController {
 
     @Autowired
     RepositorioTransportista repositorioTransportista;
+    
+    @Autowired
+    RepositorioProvincias repositorioProvincia;
 
     @PostMapping("/registra")
     public String registroProveedor(ModelMap model, String nombre, String apellido, String mail, String password, MultipartFile foto, String zona, String telefono,Integer pesoMaximo, String descripcion, @RequestParam String modelo, Integer anio, String patente, Integer poliza, List<MultipartFile> fotos) throws ErroresServicio {
@@ -60,8 +65,10 @@ public class TransportistaController {
     }
 
     @GetMapping("/registra")
-    public String mostrarPaginaRegistro() {
-        return "registroTransportista";
+    public String mostrarPaginaRegistro(ModelMap modelo) {
+        List <Provincias> provincias = repositorioProvincia.buscarProvinciaTotales();
+        modelo.put("provincias", provincias);
+        return "transportista_form";
     }
 
     @GetMapping("")
