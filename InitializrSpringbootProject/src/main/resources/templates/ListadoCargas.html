@@ -53,11 +53,30 @@
              </td>
             <!--<td> <img width='80' height='80' src='img/".$mostrar['imagen'] ?></td>-->
             <td> <!--th:text="${viaje.estado}"-->        
-                <img th:if="${#strings.toString(viaje.estado)== 'ELEGIR'}" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBhIIBxEODhMSFw8SDxASDQ8NEg8SFREWFhUSFRUYHSggGBolGxUVITEhJSkrLi4uFx81ODMtNygtLisBCgoKDg0OGg8QFy0dHR03Ky0tKy0rMC0rKzcrKy0tLSs2LS0tLS0tLS0rKy03LS0tLS0rKy0rLTcrKzcrLSstK//AABEIAOEA4QMBIgACEQEDEQH/xAAXAAEBAQEAAAAAAAAAAAAAAAAAAQIG/8QAHRABAQEAAgMBAQAAAAAAAAAAAAERAiESQVExIv/EABcBAQEBAQAAAAAAAAAAAAAAAAABBwb/xAAXEQEBAQEAAAAAAAAAAAAAAAAAIQER/9oADAMBAAIRAxEAPwDtAGeunAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0AAAAAAAAAAAACfrXjPLGV8v61c4mkktw4yUnLLpJ7BM67as4z6zyu1rlnSwTx/rDJh5XdLZ6iQpkzbq8cypb1hLkxe50JNmlk9E5ZMS34kFyS5VmeNS8t/YS/VgZ1pkt6Jy6xN+JBcnli8ZnLE8u9Jyy6vcCTrTNmwlzpN6yJBrJm1n2tuzE34bwWyS5STrS8t/YS4QpmzYWSTTeshbsILeM3GbMuLeW3Ut26bwwARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/2Q==" alt="mdo" width="52" height="52" class="rounded-circle">
-                <img th:if="${#strings.toString(viaje.estado)== 'FINALIZADA'}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ0AAAC8CAMAAABVLQteAAAAA1BMVEUA/wA0XsCoAAAASElEQVR4nO3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC+DcZIAAF57zC0AAAAAElFTkSuQmCC" alt="mdo" width="52" height="52" class="rounded-circle">
-                <img th:if="${#strings.toString(viaje.estado)== 'VIAJANDO'}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAA1BMVEXMAAA/z1L+AAAASElEQVR4nO3BgQAAAADDoPlTX+AIVQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwDcaiAAFXD1ujAAAAAElFTkSuQmCC" alt="mdo" width="52" height="52" class="rounded-circle">
+                <img th:if="${#strings.toString(viaje.estado)== 'ELEGIR'}" src="https://icones.pro/wp-content/uploads/2021/06/icone-chargement-orange.png" alt="mdo" width="48" height="48" class="rounded-circle">
+                <img th:if="${#strings.toString(viaje.estado)== 'FINALIZADA'}" src="https://c8.alamy.com/compes/rpk7w2/las-marcas-de-verificacion-tick-verde-icono-dentro-del-circulo-ilustracion-vectorial-rpk7w2.jpg" alt="mdo" width="52" height="52" class="rounded-circle">
+                <img th:if="${#strings.toString(viaje.estado)== 'VIAJANDO'}" src="https://www.pngmart.com/files/16/Tick-Green-Check-Mark-PNG-Clipart.png" alt="mdo" width="52" height="52" class="rounded-circle">
             </td>
         </tr>
     </table>
+    </section>
+    </main>
+
+    <section th:replace="fragment/fragmentosCards :: truckCards"></section>
+    
+    <!-- NO FUNCIONA /NO SE VE. REAJUSTAR-->
+    <div class="contenidoOculto" style="padding-bottom: 6rem; align-content: center;">
+        <a href="#" class="btn btn-primary btn-sm">Ver más</a>
+       
+    </div>
+
+    <footer th:replace="fragment/fragmentos :: footer"></footer>
+
+    <!-- BUNDLE BOOTSTRAP5 -> PLUGGINS JS Y POPPER PARA FUNCIONALIDADES DINÁMICAS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="/animacion.js"></script>
 </body>
 </html>
