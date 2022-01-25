@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ES-ar" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- TIPOGRAFÍAS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- LOGUITO EN PESTAÑA -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
+    <title>Comprobantes</title>
+</head>
+<body>
+    <div class="pagenotfound">
+        <div class="copy-container center-xy">
+          
+          <h1>Listado de Comprobantes</h1>
+    <table class="table table-dark table-stripe">
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th>EMPRESA CONTRATANTE</th>
+                <th>VIAJE</th>
+                <th>DISTANCIA (KM)</th>
+                <th>CARGA</th>
+                <th>VALORACIÓN</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="comprobante,iterator:${comprobantes}">
+                <td th:text="${iterator.index+1}"></td>
+                <td th:text="${comprobante.proveedor.nombreEmpresa}"></td>
+                <td th:text="${comprobante.viaje.origen}" ></td>
+                <td th:text="${comprobante.viaje.destino}" ></td>
+                <td th:text="${comprobante.viaje.kmRecorridos}"></td>
+                <td th:text="${comprobante.viaje.tipoCargas}"></td>
+                <td th:text="${comprobante.valoracion}"></td>
+                
+            </tr>
+        </tbody>
+          <span class="handle"></span>
+      
+        </div>
+      </div>
+</body>
+</html>

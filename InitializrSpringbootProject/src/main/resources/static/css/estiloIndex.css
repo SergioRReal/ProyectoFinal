@@ -1,35 +1,255 @@
-#navBar {
-  height: 3rem;
-  width: auto;
-  background-color: rgb(42, 81, 165);
+
+* ::before ::after {
+  margin: 0;
+  box-sizing: border-box;
 }
 
-#banner {
-  height: 20rem;
-  width: auto;
-  background-color: rgb(0, 174, 255);
+:root { 
+  background-color: #fcfcfc;
+}
+
+body {
+  background-color:#fcfcfc;
+  font-family: 'Raleway', sans-serif;
+}
+
+.topheader {
+  height: 150vh;
+  background-image: url("../img/IndexBanner3.png");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* BARRA NAV-HEADER */
+.nav-container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+nav {
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+}
+
+nav .logo {
+    padding: 1rem;
+    width: 45%;
+    margin-right: 6rem;
+    margin-bottom: 8px;
+}
+
+nav .nav__items {
+    padding: 1.3rem;
+    display: flex;    
+    font-size: 11pt;
+    font-style: italic;
+    font-weight: 500;
+    display: inline-block;
+}
+
+nav .nav__items a {
+  color: #fcfcfc;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 5px;
+  transition: all 0.10s linear; 
+  border-radius: 5px;  
+}
+
+nav .nav__items a:hover {
+    background: #6930C3;
+}
+/* ////////////////////////////////////////////////////////////////////////*/
+
+/* TÍTULO + TEXTO INTRODUCTORIO */
+.topheader-container {
+  width: 55%;
+  text-align: center;
+  margin: auto;
+  margin-top: 4rem;
+}
+
+.topheader-title{
+  color: #fbfbfb;
+  font-size: 4rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.topheader-texts{
+  color: #fbfbfb;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 0px 6px 6px 0px #00000040;
+  ;
+}
+
+/* ////////////////////////////////////////////////////////////////////////*/
+
+/* BUTTONS */
+.buttom-mod-container {
+  position: relative;
+  background-color: none;
+  display: flex;
+  justify-content: center;
   margin-bottom: 1rem;
 }
 
-#carrusel{
-  height: 350px;
-  width: 100%;
-  margin-top: 30px;
-  background-color: chartreuse;
-  margin-block-start: auto;
+.btn-primary {
+  color: #fcfcfc;
+  background: #6930C3;
+  font-weight: 400;
+  padding: 0.5rem;
+  width: 13rem;
+  box-shadow: 0px 4px 4px rgba(31, 31, 31, 0.25);
+  border-radius: 10px;
+  border-color: #6930C3;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-#footer{
-  min-height: 70px;
-  background-color: #191919;
-  background-image: -moz-linear-gradient(top, #191919, #000000);
-  background-image: -o-linear-gradient(top, #191919, #000000);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #191919), color-stop(1, #000000));
-  background-image: -webkit-linear-gradient(#191919, #000000);
-  background-image: linear-gradient(top, #191919, #000000);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#191919', endColorStr='#000000');
-  border-top: 1px solid rgba(50, 50, 50, 0.3);
-  width: 100%;
-  position: fixed;
-  bottom: 0;
+.btn-primary:hover {
+  color: #6930C3;
+  background: #FCFCFC;
+  border-width: 0.2rem;
+  border-color: #6930C3;
 }
+
+/* MODALS */
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.modal-content {
+  margin: 0 auto;
+}
+
+.modal-content .btn-close {
+  background-color: none;
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.modal-content .btn-close :hover {
+  color: #31175a;
+}
+
+.modal-title {
+  color: #31175a;
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+#ing {
+  margin: 0 3rem;
+}
+
+.form-group {
+  margin: 1rem 0rem;
+}
+
+.form-control {
+  height: 3rem;
+  font-size: 0.8rem;
+}
+
+.forgotpass {
+  margin-top: 0.2rem;
+  margin-bottom: 1rem;
+  text-align: right;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.forgotpass a {
+  text-decoration: none;
+  color: #6930C3;
+}
+
+.forgotpass a:hover {
+  text-decoration: underline;
+}
+
+form .btn-primary {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* Modal largo de bootstrap -> registrarme*/
+.modal-content .reg {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  display:flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.left {
+  height: 100vh;
+  width: 45%;
+  margin: 3rem;
+  overflow-y:auto; /* Scroll automatico si se achica pantalla */
+
+}
+
+.right {
+  width: 55%;
+  background-image: url(../img/modal\ tipousuario.png);
+  background-size: cover;
+  background-position: center;
+} 
+
+.modal-subtitle {
+  color: #4a2488;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.modal-lg .btn-primary {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+/* ////////////////////////////////////////////////////////////////////////*/
+
+/* Carrousel de marcas */
+.carrusel {
+  margin-top: 8rem;
+}
+
+.text-subtitle {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 26px;
+  color: #999798;
+}
+
+#carouselExampleFade{
+  height: 170px;
+  width: 900px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.carousel-inner {
+  width: 300px;
+}
+

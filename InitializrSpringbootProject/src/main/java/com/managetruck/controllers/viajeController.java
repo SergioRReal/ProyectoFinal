@@ -1,16 +1,22 @@
 package com.managetruck.controllers;
 
 import com.managetruck.entidades.Comprobante;
+import com.managetruck.entidades.Provincias;
+import com.managetruck.entidades.Transportista;
 import com.managetruck.entidades.Usuario;
+import com.managetruck.entidades.Viaje;
 import com.managetruck.errores.ErroresServicio;
 import com.managetruck.servicios.ComprobanteServicio;
+import com.managetruck.servicios.ProvinciasServicio;
 import com.managetruck.servicios.TransportistaServicio;
 import com.managetruck.servicios.ViajeServicio;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,14 +32,19 @@ public class viajeController {
     private TransportistaServicio transportistaServicio;
     @Autowired
     private ComprobanteServicio comprobanteServicio;
+    
+    @Autowired
+    ProvinciasServicio provinciaServicio;
 
     @GetMapping("/pedido")
-    public String inicioViaje() {
-        return null;
+    public String inicioViaje(ModelMap modelo) {
+        List<Provincias> provincias = provinciaServicio.listarProvinciasTotales();
+        modelo.put("provincias",provincias);
+        return "FormNuevaCarga";
     }
 
     @PostMapping("/pedido")
-    public String comienzoViaje(HttpSession session,String idProveedor, @RequestParam Integer peso, @RequestParam Integer kmRecorridos, @RequestParam String tipoCargas, @RequestParam String destino, @RequestParam String origen) {
+    public String comienzoViaje(HttpSession session,String idProveedor, @RequestParam String origen, @RequestParam String destino, @RequestParam String tipoCargas, @RequestParam Integer peso, @RequestParam Integer kmRecorridos) {
         Usuario login =(Usuario) session.getAttribute("usuariosession");
         if (login == null || !login.getId().equals(idProveedor)) {
                 return "redirect:/login";
@@ -43,7 +54,7 @@ public class viajeController {
         } catch (ErroresServicio ex) {
             Logger.getLogger(viajeController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return "indexEmpresa";
     }
 
     @GetMapping("/modificar-viaje")
@@ -84,6 +95,7 @@ public class viajeController {
         }
         return "redirect:/valorar";
     }
+    
     @GetMapping("/valorar")
     public String puntear (String id_comprobante){
         return null;
@@ -100,16 +112,51 @@ public class viajeController {
         }
         return null;
     }
-    @PostMapping("/aplicar")
-    public String aplicar(String id_transportista, String id_viaje){
-        
+    @GetMapping("/aplicar")
+    public String aplicar(ModelMap model, @RequestParam(required = true)String id_transportista,@RequestParam(required = false) String error, @RequestParam(required = true)String id_viaje){
+        System.out.println("este es el id trasnportista="+id_transportista);
+        System.out.println("este el id comprobante="+id_viaje);
         try {
             viajeServicio.aplicar(id_transportista, id_viaje);
+                  
+
         } catch (ErroresServicio ex) {
             Logger.getLogger(viajeController.class.getName()).log(Level.SEVERE, null, ex);
+            model.put("error", "Usted no puede aplicar al viaje");
+            return "redirect:/inicio";
         }
         
-        return null;
+        return "redirect:/inicio";
+    }
+    @GetMapping("/listar-viajes")
+    public String listarviajes(@RequestParam (required=true)String id,ModelMap modelo){
+        try {
+            System.out.println("id proveedor" +id);
+            List<Viaje> viajes = viajeServicio.viajesCreadosProveedor(id);
+            modelo.put("viajes",viajes);
+            return "ListadoCargas";
+        } catch (ErroresServicio ex) {
+            Logger.getLogger(viajeController.class.getName()).log(Level.SEVERE, null, ex);
+            return "redirect:/inicio";
+        }
+        
+    }
+    @GetMapping("/listar-postulantes")
+    public String postulantes(@RequestParam(required = true)String id_viaje, ModelMap modelo){
+        System.out.println("Esta por entrar al try");
+        try {
+            Viaje viaje=viajeServicio.buscarViajeId(id_viaje);
+            System.out.println("el id del viaje es :"+id_viaje);
+            System.out.println("El viaje es"+viaje);
+            List<Transportista> postulantes = viaje.getListadoTransportista();
+            System.out.println(postulantes);
+            modelo.put("id_viaje", id_viaje);
+            modelo.put("transportistas", postulantes); 
+            return "TransportistasPostulados";
+        } catch (ErroresServicio ex){
+            Logger.getLogger(viajeController.class.getName()).log(Level.SEVERE, null, ex);
+            return "redirect:/inicio";
+        }
     }
     
 }

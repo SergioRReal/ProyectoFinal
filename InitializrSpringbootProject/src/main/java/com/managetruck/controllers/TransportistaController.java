@@ -1,6 +1,7 @@
 package com.managetruck.controllers;
 
 import com.managetruck.entidades.Camion;
+import com.managetruck.entidades.Foto;
 import com.managetruck.entidades.Provincias;
 import com.managetruck.entidades.Transportista;
 import com.managetruck.entidades.Usuario;
@@ -9,7 +10,11 @@ import com.managetruck.repositorios.RepositorioProvincias;
 import com.managetruck.repositorios.RepositorioTransportista;
 import com.managetruck.servicios.CamionServicio;
 import com.managetruck.servicios.TransportistaServicio;
+import com.managetruck.servicios.UsuarioServicio;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/transportista")
 public class TransportistaController {
-    
+
     @Autowired
     CamionServicio camionServicio;
 
@@ -35,21 +40,28 @@ public class TransportistaController {
     RepositorioTransportista repositorioTransportista;
     
     @Autowired
-    RepositorioProvincias repositorioProvincia;
+    RepositorioProvincias repositorioProvincias;
+    
+    @Autowired
+    UsuarioServicio usuarioServicio;
 
     @PostMapping("/registra")
-    public String registroProveedor(ModelMap model, String nombre, String apellido, String mail, String password, MultipartFile foto, String zona, String telefono,Integer pesoMaximo, String descripcion, @RequestParam String modelo, Integer anio, String patente, Integer poliza, List<MultipartFile> fotos) throws ErroresServicio {
-        try {
-            camionServicio.crearCamion(pesoMaximo, modelo, descripcion, anio, patente, poliza, fotos);
-            transportistaServicio.crearTransportista(nombre, apellido, mail, password, foto, zona, telefono);
+    public String registroProveedor(ModelMap model, String nombre, String apellido, String mail, String clave1,String clave2, MultipartFile archivo, String provincia, String telefono, Integer pesoMaximo, String descripcion, @RequestParam String modelo, Integer anio, String patente, Integer poliza, List<MultipartFile> archivos) throws ErroresServicio {
+        try{    
+            transportistaServicio.crearTransportista(nombre, apellido, mail, clave1,clave2, archivo, provincia, telefono);
+            Camion camion=camionServicio.crearCamion(pesoMaximo, modelo, descripcion, anio, patente, poliza, archivos);
+            transportistaServicio.SetearCamion(camion.getID(), mail);
         } catch (ErroresServicio es) {
+            List<Provincias> provincias = repositorioProvincias.buscarProvinciastotales();
+            model.put("provincias",provincias);
             model.put("error", es.getMessage());
             model.put("nombre", nombre);
             model.put("apellido", apellido);
             model.put("mail", mail);
-            model.put("password", password);
-            model.put("foto", foto);
-            model.put("zona", zona);
+            model.put("clave", clave1);
+            model.put("clave", clave2);
+            model.put("archivo", archivo);
+            model.put("provincia", provincia);
             model.put("telefono", telefono);
             model.put("pesoMaximo", pesoMaximo);
             model.put("modelo", modelo);
@@ -57,26 +69,32 @@ public class TransportistaController {
             model.put("anio", anio);
             model.put("patente", patente);
             model.put("poliza", poliza);
-            model.put("fotos", fotos);
-            
-            return "index";//modificar nombre de vista, no debe redirigir a index si no a la vista que utilizaremos
+            model.put("archivos", archivos);
+
+            return "transportista_form";//modificar nombre de vista, no debe redirigir a index si no a la vista que utilizaremos
         }
-        return "redirect:/registroTransportista";
+        return "index";
     }
 
     @GetMapping("/registra")
     public String mostrarPaginaRegistro(ModelMap modelo) {
-        List <Provincias> provincias = repositorioProvincia.buscarProvinciaTotales();
-        modelo.put("provincias", provincias);
+        List<Provincias> provincias = repositorioProvincias.buscarProvinciastotales();
+        modelo.put("provincias",provincias);
         return "transportista_form";
     }
 
     @GetMapping("")
-    public String listarTransportista(ModelMap modelo, @RequestParam(required = false) String error, @RequestParam(required = false) String nombre) {
-        if (nombre != null) {
-            List<Transportista> transportistas = repositorioTransportista.buscarTransportistaPorNombre2(nombre);
-            modelo.addAttribute("tittle", "Listado Transportistas");
-            modelo.addAttribute("transportistas", transportistas);
+    public String listarTransportista(ModelMap modelo, @RequestParam(required = false) String error, @RequestParam(required = false) HttpSession session) {
+        if (session != null) {
+            Usuario login = (Usuario) session.getAttribute("usuariosession");
+            System.out.println(login.getZona());
+            List<Transportista> transportistas2 = repositorioTransportista.buscarTransportistaPorZona(login.getZona());
+            
+            if (!transportistas2.isEmpty()) {
+                modelo.addAttribute("tittle", "Listado Transportistas");
+            modelo.addAttribute("transportistas2", transportistas2);
+            }
+            
         } else {
             List<Transportista> transportistas = repositorioTransportista.findAll();
             modelo.addAttribute("tittle", "Listado Transportistas");
@@ -105,32 +123,56 @@ public class TransportistaController {
         }
         return "redirect:/index";//modificar nombre de vista, no debe redirigir a index si no a la vista que utilizaremos 
     }
-    
+
     @PostMapping("/modificar")
-    public String modificar(HttpSession session,ModelMap modelo,String id, String nombre, String apellido, String mail, String password, MultipartFile foto, String zona, String telefono,Camion camion, double valoracion, Integer cantidadViajes) throws ErroresServicio{
-        //verificacion de que el usuario que esta modificando sea el mismo que va a modificar
+    public String modificar(HttpSession session, ModelMap modelo, String id, String nombre, String apellido, String mail,@RequestParam(required = false) MultipartFile archivo, String zona, String telefono) throws ErroresServicio {
+        //verificacion de que el usuario que esta modificando sea el mismo que va a modifica
         Usuario login = (Usuario) session.getAttribute("usuariosession");
-        if (login == null || login.getId().equals(id)) {
+        if (login == null || !login.getId().equals(id)) {
             return "redirect:/login";
-        }
-        try{
-        transportistaServicio.modificarUsuario(id, nombre, apellido, mail, password, foto, zona, telefono,camion, valoracion, cantidadViajes);
+        }  
+        try {
+            transportistaServicio.modificarUsuario(id, nombre, apellido, mail, archivo, zona, telefono);
         } catch (ErroresServicio ex) {
             modelo.put("error", ex.getMessage());
             modelo.put("id", id);
             modelo.put("nombre", nombre);
             modelo.put("apellido", apellido);
             modelo.put("mail", mail);
-            modelo.put("password", password);
-            modelo.put("foto", foto);
+            modelo.put("archivo", archivo);
             modelo.put("zona", zona);
             modelo.put("telefono", telefono);
-            modelo.put("camion", camion);
-            modelo.put("valoracion", valoracion);
-            modelo.put("cantidadViajes", cantidadViajes);
-            
+//            modelo.put("camion", camion);
+//            modelo.put("valoracion", valoracion);
+//            modelo.put("cantidadViajes", cantidadViajes);
+
         }
-        return "index";//modificar nombre de vista, no debe redirigir a index si no a la vista que utilizaremos 
+        return "redirect:/inicio";//modificar nombre de vista, no debe redirigir a index si no a la vista que utilizaremos 
+    }
+
+    @GetMapping("/indexTransportista")
+    public String indexTransportista() {
+        return "indexTransportista";
     }
     
+    @GetMapping("/perfil-transportista")
+    public String perfilTransportista(String id,ModelMap modelo, Model model){
+        try {
+            Transportista transportista = transportistaServicio.buscarID(id);
+            Camion camion = transportista.getCamion();
+            List<Foto> fotos = camion.getFoto();
+            System.out.println("la lista de fotos es");
+            System.out.println(fotos);
+            model.addAttribute("fotos", fotos);
+            model.addAttribute("camion", camion);
+            model.addAttribute("perfil", transportista);
+            List<Provincias> provincias = repositorioProvincias.buscarProvinciastotales();
+            modelo.put("provincias",provincias);
+            return "perfilTransp";
+        } catch (ErroresServicio ex) {
+            Logger.getLogger(TransportistaController.class.getName()).log(Level.SEVERE, null, ex);
+            return "redirect:/inicio";
+        }
+    }
+
 }
