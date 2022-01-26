@@ -1,7 +1,6 @@
 package com.managetruck.entidades;
 
 import java.util.List;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,21 +16,21 @@ public class Transportista extends Usuario {
     @OneToOne
     private Camion camion;
     private Integer cantidadViajes;
-    private Integer valoracion;
+    private double valoracion;
+    
     @OneToMany
     private List<Comprobante> comprobante;
-    
+
     public Transportista() {
     }
 
-    public Transportista(boolean estado, Camion camion, Integer cantidadViajes, Integer valoracion, List comprobante) {
+    public Transportista(boolean estado, Camion camion, Integer cantidadViajes, double valoracion, List comprobante) {
         this.estado = estado;
         this.camion = camion;
         this.cantidadViajes = cantidadViajes;
         this.valoracion = valoracion;
         this.comprobante = comprobante;
     }
-
 
     public boolean isViajando() {
         return viajando;
@@ -70,7 +69,7 @@ public class Transportista extends Usuario {
         return valoracion;
     }
 
-    public void setValoracion(Integer valoracion) {
+    public void setValoracion(double valoracion) {
         this.valoracion = valoracion;
     }
 
