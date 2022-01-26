@@ -174,9 +174,9 @@
                             </div>
                         </div>
 
-                        <button type="reset" class="btn btn-primary close">
-                            <a th:href="@{/}">X</a>
-                        </button>
+                        <a th:href="@{/}"><button type="reset" class="btn btn-primary close">
+                            X
+                        </button></a>
                     </div>
                 </div>
             </div>
@@ -193,7 +193,7 @@
 
     <!-- JQUERY para hacer validar formulario y a partir de eso: modal exito -->
     <script>
-        $("#checkReg").click(function (parametroBooleanSpring) {
+        $("#checkReg").pregunta(function (parametroBooleanSpring) {
             if (parametroBooleanSpring == true) 
                 $("#exampleModal").modal("show");
             });

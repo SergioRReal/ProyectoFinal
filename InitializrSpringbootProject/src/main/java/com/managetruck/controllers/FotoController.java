@@ -4,12 +4,14 @@ package com.managetruck.controllers;
 import com.managetruck.entidades.Camion;
 import com.managetruck.entidades.Comprobante;
 import com.managetruck.entidades.Usuario;
+import com.managetruck.entidades.Viaje;
 import com.managetruck.errores.ErroresServicio;
 import com.managetruck.servicios.CamionServicio;
 import com.managetruck.servicios.ComprobanteServicio;
 import com.managetruck.servicios.ProveedorServicio;
 import com.managetruck.servicios.TransportistaServicio;
 import com.managetruck.servicios.UsuarioServicio;
+import com.managetruck.servicios.ViajeServicio;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,13 @@ public class FotoController {
     
     @Autowired
     private ComprobanteServicio comprobanteServicio;
+    
+    @Autowired
+    private FotoServicio fotoServicio;
+    
+    @Autowired
+    private ViajeServicio viajeServicio;
+    
     
     //metodo get para la foto del usuario
     @GetMapping("/usuario-imagen/{id}")
@@ -92,6 +101,26 @@ public class FotoController {
             throw new ErroresServicio ("El proveedor no tiene una imagen para mostrar");
         }
         byte[] foto = comprobante.getProveedor().getFoto().getContenido();
+        
+        HttpHeaders headers = new HttpHeaders();
+        //coloco all para probar sino la voy a cambiar a jpeg
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        
+        return new ResponseEntity<>(foto, headers,HttpStatus.OK);
+        }catch(ErroresServicio ex){
+            Logger.getLogger(FotoController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    //metodo get para la foto del TRASNPORTISTA PARTIENDO DEL VIAJE
+    @GetMapping("/viaje-transportista/{id}")
+    public ResponseEntity <byte[]> fototTransportistaViaje(@PathVariable String id){
+        try{
+        Viaje viaje = viajeServicio.buscarViajeId(id);
+        if ( viaje.getTransportistaAplicado().getFoto()== null) {
+            throw new ErroresServicio ("El proveedor no tiene una imagen para mostrar");
+        }
+        byte[] foto = viaje.getTransportistaAplicado().getFoto().getContenido();
         
         HttpHeaders headers = new HttpHeaders();
         //coloco all para probar sino la voy a cambiar a jpeg
