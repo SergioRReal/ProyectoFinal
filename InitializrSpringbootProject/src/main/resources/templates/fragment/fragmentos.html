@@ -18,7 +18,7 @@
 
 <!--ACA EMPIEZA EL FRAGMENT NAV INDEX TRANSPORTISTA-->
 <header th:fragment="headerLoginTrans" class="py-3 mb-3 border-bottom">
-  <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+  <div class="contenedorNav container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 0.1fr 0.2fr 0.5fr 0.1fr;">
     <!--DESDE ACA EL MENU OFFCANVAS-->
     <button class="btn btn-toolbar" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
       aria-controls="offcanvasScrolling">
@@ -90,24 +90,90 @@
       </div>
     </div>
     <!--HASTA ACA ES EL MENU OFFCANVAS-->
-    <div class="d-flex align-items-end">
+    <!--ACA EMPIEZAN LOS OTROS ELEMENTOS DEL NAV-->
+    <div>
+      <a href="/" class="d-flex mb-3 mb-md-0 ">
+        <img src="../img/ManageTruck_logo-Blanco.png" class="img" width="200" height="52" alt="">
+      </a>
+    </div>
+    <div class="d-flex align-items-center">
       <form class="w-100 me-3">
-        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        <input type="buscar" class="form-control" placeholder="Buscar..." aria-label="Buscar">
       </form>
+    </div>
+    <div class="d-flex text-end" >
+      <a class="w-100 me-3 align-content-end" th:href="@{/logout}"><button class="btn btn-dark">SALIR</button></a>
     </div>
   </div>
 </header>
 
 
 <!--ACA EMPIEZA EL FRAGMENT NAV INDEX EMPRESA-->
-<header th:fragment="headerLoginEmp" class="py-3 mb-3 border-bottom">
-  <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+<header th:fragment="headerLoginEmp" class="topheader">
+  <div class="nav-container">
+      <nav class="nav">
+        <!--DESDE ACA EL MENU OFFCANVAS-->
+    <button class="btn btn-toolbar" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+    aria-controls="offcanvasScrolling">
+    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
+      data-bs-toggle="dropdown" aria-expanded="false">
+      <img th:if="${session.usuariosession.foto == null}" src="/img/Foto sin foto.jpg" alt="mdo" width="52" height="52" class="rounded-circle">
+      <!-- FORMA EN MOSTRAR LA IMAGEN QUE TIENE EL USUARIO GUARDADA-->
+       <img th:if="${session.usuariosession.foto != null}" th:src="${'/foto/usuario-imagen/'+session.usuariosession.id}" alt="mdo" width="52" height="52" class="rounded-circle">
+    </a>
+  </button>
+  <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasScrolling"
+    aria-labelledby="offcanvasLabel">
+    <div class="offcanvas-header">
+      <!--<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#my-offcanvas" aria-label="Close"></button>-->
+      <div class="justify-content-center">
+        <img
+            th:if="${session.usuariosession.foto == null}"
+          src="../img/Foto sin foto.jpg"
+          class="img-thumbnail rounded-circle col-auto" alt="Perfil" width="250" height="300">
+        <img
+            th:if="${session.usuariosession.foto != null}"
+          th:src="${'/foto/usuario-imagen/'+session.usuariosession.id}"
+          class="img-thumbnail rounded-circle col-auto" alt="Perfil" width="250" height="300">
+      </div>
+    </div>
+    <div class="offcanvas-body">
+      <div class="">
+        <ul class="nav flex-column align-content-center">
+          <li class="nav-item"><a class="buttom-mod-container btn btn-primary" th:href="@{/proveedor/perfil-proveedor}+'?id='+${session.usuariosession.id}">PERFIL</a></li>
+          <li class="nav-item"><a class="buttom-mod-container btn btn-primary" th:href="@{/viaje/listar-viajes}+'?id='+${session.usuariosession.id}">REGISTRO DE VIAJES</a></li>
+          <li class="nav-item"><a class="buttom-mod-container btn btn-primary" th:href="@{/viaje/pedido}">NUEVA CARGA</a></li>
+        </ul>
+      </div>
+      <div>
+        <a class="buttom-mod-container" th:href="@{/logout}"><button class="btn btn-dark mt-5">CERRAR SESIÓN</button></a>
+      </div>
+    </div>
+  </div>
+  <!--HASTA ACA ES EL MENU OFFCANVAS-->
+          <a href="/" class="logo"><img src="../img/ManageTruck_logo-Blanco.png" class="logo"></a>
+          <div class="d-flex align-items-center">
+            <form class="w-100 me-3 align-content-center">
+              <input type="buscar" class="form-control" placeholder="Buscar..." aria-label="Buscar">
+            </form>
+          </div>
+          <div class="d-flex text-end" >
+            <a class="w-100 me-3 align-content-end" th:href="@{/logout}"><button class="btn btn-dark">SALIR</button></a>
+          </div>
+      </nav>
+  </div>
+</header>
+
+
+<!--ACA EMPIEZA EL FRAGMENT NAV INDEX EMPRESA-->
+<header  class="mb-3 border-bottom">
+  <div class="contenedorNav container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 0.1fr 0.2fr 0.5fr 0.1fr;">
     <!--DESDE ACA EL MENU OFFCANVAS-->
     <button class="btn btn-toolbar" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
       aria-controls="offcanvasScrolling">
       <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
         data-bs-toggle="dropdown" aria-expanded="false">
-        <img th:if="${session.usuariosession.foto == null}" src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg" alt="mdo" width="52" height="52" class="rounded-circle">
+        <img th:if="${session.usuariosession.foto == null}" src="/img/Foto sin foto.jpg" alt="mdo" width="52" height="52" class="rounded-circle">
         <!-- FORMA EN MOSTRAR LA IMAGEN QUE TIENE EL USUARIO GUARDADA-->
          <img th:if="${session.usuariosession.foto != null}" th:src="${'/foto/usuario-imagen/'+session.usuariosession.id}" alt="mdo" width="52" height="52" class="rounded-circle">
       </a>
@@ -119,7 +185,7 @@
         <div class="justify-content-center">
           <img
               th:if="${session.usuariosession.foto == null}"
-            src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg"
+            src="../img/Foto sin foto.jpg"
             class="img-thumbnail rounded-circle col-auto" alt="Perfil" width="250" height="300">
           <img
               th:if="${session.usuariosession.foto != null}"
@@ -128,24 +194,32 @@
         </div>
       </div>
       <div class="offcanvas-body">
-        <div class="text-center">
-          <ul class="nav flex-column">
-            <li class="nav-item"><a class="btn btn-primary" th:href="@{/proveedor/perfil-proveedor}+'?id='+${session.usuariosession.id}">PERFIL</a></li>
-            <li class="nav-item"><a class="btn btn-primary" th:href="@{/viaje/listar-viajes}+'?id='+${session.usuariosession.id}">REGISTRO DE VIAJES</a></li>
-            <li class="nav-item"><a class="btn btn-primary" th:href="@{/viaje/pedido}">NUEVA CARGA</a></li>
+        <div class="">
+          <ul class="nav flex-column align-content-center">
+            <li class="nav-item"><a class="buttom-mod-container btn btn-primary" th:href="@{/proveedor/perfil-proveedor}+'?id='+${session.usuariosession.id}">PERFIL</a></li>
+            <li class="nav-item"><a class="buttom-mod-container btn btn-primary" th:href="@{/viaje/listar-viajes}+'?id='+${session.usuariosession.id}">REGISTRO DE VIAJES</a></li>
+            <li class="nav-item"><a class="buttom-mod-container btn btn-primary" th:href="@{/viaje/pedido}">NUEVA CARGA</a></li>
           </ul>
         </div>
         <div>
-          <a class="" th:href="@{/logout}"><button class="btn btn-dark mt-3">CERRAR SESIÓN
-          </button></a>
+          <a class="buttom-mod-container" th:href="@{/logout}"><button class="btn btn-dark mt-5">CERRAR SESIÓN</button></a>
         </div>
       </div>
     </div>
     <!--HASTA ACA ES EL MENU OFFCANVAS-->
-    <div class="d-flex align-items-end">
+    <!--ACA EMPIEZAN LOS OTROS ELEMENTOS DEL NAV-->
+    <div>
+      <a href="/" class="d-flex mb-3 mb-md-0 ">
+        <img src="../img/ManageTruck_logo-Blanco.png" class="img" width="200" height="52" alt="">
+      </a>
+    </div>
+    <div class="d-flex align-items-center">
       <form class="w-100 me-3">
-        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+        <input type="buscar" class="form-control" placeholder="Buscar..." aria-label="Buscar">
       </form>
+    </div>
+    <div class="d-flex text-end" >
+      <a class="w-100 me-3 align-content-end" th:href="@{/logout}"><button class="btn btn-dark">SALIR</button></a>
     </div>
   </div>
 </header>
